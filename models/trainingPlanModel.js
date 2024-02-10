@@ -54,7 +54,7 @@ const trainingPlanSchema = new Schema({
     },
     favorite:{
         type:Boolean,
-        required:true
+        required:false
     },
     slug:{
         type:String,

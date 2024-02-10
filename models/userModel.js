@@ -60,7 +60,7 @@ const userSchema = new Schema({
     }],
     favBooks:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"",//add ref to desired schema here after creating the schema
+        ref:"Book",
         required:false
     }],
     exerciseHistory:[{
