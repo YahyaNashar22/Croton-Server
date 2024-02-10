@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from 'body-parser';
 
 import dbConnection from './db/dbConnection.js';
+import userRouter from './routes/userRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("images"));
+
+
+//Routes for different models
+app.use('/users', userRouter);
 
 //CORS Policies
 app.use(

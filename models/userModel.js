@@ -38,11 +38,11 @@ const userSchema = new Schema({
     },
     height:{
         type:Number,
-        required:true
+        required:false
     },
     weight:{
         type:Number,
-        required:true
+        required:false
     },
     role:{
         type:String,
