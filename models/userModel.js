@@ -65,9 +65,13 @@ const userSchema = new Schema({
     }],
     exerciseHistory:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"",//add ref to desired schema here after creating the schema
+        ref:"Exercise",
         required:false
     }],
+    slug:{
+        type:String,
+        required:true
+    }
 })
 
 userSchema.pre('validate',(next)=>{

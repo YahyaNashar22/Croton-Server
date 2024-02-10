@@ -1,5 +1,4 @@
-import mongoose, { mongo } from "mongoose";
-import  { User } from "./User.model";
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
