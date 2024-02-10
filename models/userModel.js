@@ -55,7 +55,7 @@ const userSchema = new Schema({
     }],
     favRecipes:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"",//add ref to desired schema here after creating the schema
+        ref:"Recipe",
         required:false
     }],
     favBooks:[{

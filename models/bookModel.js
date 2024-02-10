@@ -50,7 +50,7 @@ const bookSchema = new Schema({
     }
 })
 
-userSchema.pre('validate',(next)=>{
+bookSchema.pre('validate',(next)=>{
     if(!this.slug){
         this.slug = slugify(title);
     }

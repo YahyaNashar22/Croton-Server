@@ -38,7 +38,7 @@ const exerciseSchema = new Schema({
     }
 })
 
-userSchema.pre('validate',(next)=>{
+exerciseSchema.pre('validate',(next)=>{
     if(!this.slug){
         this.slug = slugify(name)
     }

@@ -62,7 +62,7 @@ const trainingPlanSchema = new Schema({
     }
 })
 
-userSchema.pre('validate',(next)=>{
+trainingPlanSchema.pre('validate',(next)=>{
     if(!this.slug){
         this.slug = slugify(name);
     }
