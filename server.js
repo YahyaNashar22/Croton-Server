@@ -8,6 +8,7 @@ import dbConnection from './db/dbConnection.js';
 import userRouter from './routes/userRoutes.js';
 import exerciseRouter from './routes/exerciseRoutes.js';
 import trainingPlanRouter from './routes/trainingPlanRoutes.js';
+import commentRouter from './routes/commentRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.static("images"));
 app.use('/users', userRouter);
 app.use('/exercises',exerciseRouter);
 app.use('/trainingplans',trainingPlanRouter);
+app.use('/comments',commentRouter);
 
 //CORS Policies
 app.use(

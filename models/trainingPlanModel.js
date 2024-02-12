@@ -39,11 +39,6 @@ const trainingPlanSchema = new Schema({
             required:false,
         }
     }],
-    comments:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Comment",
-        required:false
-    },
     slug:{
         type:String,
         unique:true

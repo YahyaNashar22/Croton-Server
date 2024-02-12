@@ -11,6 +11,16 @@ const commentSchema = new Schema({
     content:{
         type:String,
         required:true,
+    },
+    trainingPlanID:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"TrainingPlan",
+        required:false
+    },
+    blogID:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"",
+        required:false
     }
 })
 

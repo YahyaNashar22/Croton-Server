@@ -23,7 +23,7 @@ export const createPlan = async(req,res)=>{
 export const updatePlan=async (req,res)=> {
     const id = req.params.id;
     try{
-        const{name, focus,nbOfExercises,duration,description,exerciceID,sets,reps} = req.body;
+        const{name, focus,nbOfExercises,duration,description,exerciseObject} = req.body;
         const updatedPlan = await trainingPlanSchema.findByIdAndUpdate({_id:id},
             {$set:{
                 name:name,
@@ -31,9 +31,7 @@ export const updatePlan=async (req,res)=> {
                 nbOfExercises:nbOfExercises,
                 duration:duration,
                 description:description,
-                exerciceID:exerciceID,
-                sets:sets,
-                reps:reps 
+                exerciseObject:exerciseObject
             }})
             res.status(200).json({message:"plan updated successfully !", plan:updatedPlan})
     } catch(e) {
@@ -70,7 +68,7 @@ export const getAllPlans = async(req,res)=>{
 export const getOnePlan = async (req,res) => {
     const id = req.params.id;
     try{
-        const plan = await trainingPlanSchema.findById(id).populate("exerciseObject.exerciseID").populate('comments');
+        const plan = await trainingPlanSchema.findById(id).populate("exerciseObject.exerciseID");
         if(plan){
             res.status(200).json({message:"plan fetched successfully !",plan:plan})
         }else{
