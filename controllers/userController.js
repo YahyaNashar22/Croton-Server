@@ -17,11 +17,11 @@ function removeImage(image) {
 export const signup = async(req,res)=>{
     try{
         const {fullname, email,password,phoneNumber,age,gender,height,weight,role} = req.body;
-        const profilePic = req.file;
+        const profilePic = req.file.filename;
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
         const newUser = new userSchema({
-            fullname, email,password:hash,phoneNumber,age,gender,height,weight,role,profilePic
+            fullname:fullname, email:email,password:hash,phoneNumber:phoneNumber,age:age,gender:gender,height:height,weight:weight,role:role,profilePic:profilePic
         });
         await newUser.save();
         const token = createToken(newUser);
@@ -32,7 +32,7 @@ export const signup = async(req,res)=>{
             sameSite: "None",
           }).json({messaege:"user created successfully", userToken:decoded})
     } catch(e) {
-        res.status(400).json({message:"user cannot be created !",error:e})
+        res.status(400).json({message:"user cannot be created !",error:e.message})
     }
 }
 
@@ -145,17 +145,23 @@ export const getOneUser = async (req, res) => {
       const user = await userSchema.findById(id);
       if (user) {
         return res.json({
-          picture: user.picture,
-          role: user.role,
-          id: user._id,
-          name: user.name,
-          photourl: user.photourl,
+          fullname:user.fullname,
+          email:user.email,
+          password:user.hash,
+          phoneNumber:user.phoneNumber,
+          age:user.age,
+          gender:user.gender,
+          height:user.height,
+          weight:user.weight,
+          role:user.role,
+          profilePic:user.profilePic,
+          photoUrl:user.photoUrl
         });
       } else {
         return res.status(404).json({ error: "User Not Found!" });
       }
     } catch (err) {
-      res.status(500).json({ message: "Couldn't find user",error:err });
+      res.status(404).json({ message: "Couldn't find user",error:err });
     }
   };
 
@@ -181,11 +187,17 @@ export const updateUser = async(req,res)=>{
             removeImage(user.profilePic)
         }
         const {fullname,phoneNumber,age,gender,height,weight} = req.body;
-        const updateFields = {fullname,phoneNumber,age,gender,height,weight};
-        if(req.file){
-            updateFields.profilePic = req.file.filename;
-        }
-        const updatedUser = await userSchema.findByIdAndUpdate(id, {$set:updateFields},{new:true});
+        const image = req.file? req.file.filename:user.profilePic;
+        const updatedUser = await userSchema.findByIdAndUpdate({_id:id},
+           {$set:{
+            fullname:fullname,
+          phoneNumber:phoneNumber,
+          age:age,
+          gender:gender,
+          height:height,
+          weight:weight,
+          profilePic:image
+        }});
         
         return res.status(201).json({message:"user updated successfully !", user:updatedUser});
     } catch(e) {
@@ -200,12 +212,12 @@ export const forgotPass = async(req,res)=>{
         const {password} = req.body;
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
-        await userSchema.findOneAndUpdate(id,{$set:{
+        await userSchema.findOneAndUpdate({_id:id},{$set:{
             password:hash
         }})
         res.status(200).json({message:"password updated successfully"})
     } catch(e) {
-        res.status(400).json({message:"could not update password", error:e})
+        res.status(400).json({message:"could not update password", error:e.message})
     }
 }
 
@@ -214,10 +226,10 @@ export const changeRole = async (req,res) => {
     const id = req.params.id;
     try{
         const { role } = req.body;
-        await userSchema.findByIdAndUpdate(id,{$set:{role:role}});
+        await userSchema.findByIdAndUpdate({_id:id},{$set:{role:role}});
         res.status(200).json({message:"Role updated successfully !"});
     } catch(e) {
-        res.status(400).json({message:"couldn't update role", error:e})
+        res.status(400).json({message:"couldn't update role", error:e.message})
     }
 }
 
@@ -226,6 +238,7 @@ export const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
         const user = await userSchema.findById(id);
+        console.log(user)
         if(!user){
             return res.status(404).json({message:"user not found !"})
         }

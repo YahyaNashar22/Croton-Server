@@ -1,12 +1,19 @@
 import jwt from "jsonwebtoken";
 
 export const createToken = (user) => {
-    //Information to send inside the token
-    const userWithoutPassword = {...newUser.toJSON()};
-    delete userWithoutPassword.password;
   return jwt.sign(
     {
-      user:userWithoutPassword
+      fullname:user.fullname,
+      email:user.email,
+      password:user.hash,
+      phoneNumber:user.phoneNumber,
+      age:user.age,
+      gender:user.gender,
+      height:user.height,
+      weight:user.weight,
+      role:user.role,
+      profilePic:user.profilePic,
+      photoUrl:user.photoUrl
     },
     process.env.SECRET_TOKEN
   );

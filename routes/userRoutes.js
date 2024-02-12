@@ -11,12 +11,12 @@ userRouter.post('/gsign', googleSignup);
 userRouter.get('/login', login);
 userRouter.get('/logout', logout);
 userRouter.get('/allusers',getAllUsers);
-userRouter.get('/oneuser',getOneUser);
+userRouter.get('/oneuser/:id',getOneUser);
 
-userRouter.put('/updateUser',updateUser);
-userRouter.put('/forgotpass',forgotPass);
-userRouter.put('/changerole',changeRole);
+userRouter.put('/updateuser/:id',upload.single('image'),updateUser);
+userRouter.put('/forgotpass/:id',forgotPass);
+userRouter.put('/changerole/:id',changeRole);
 
-userRouter.delete('/deleteuser',deleteUser);
+userRouter.delete('/deleteuser/:id',deleteUser);
 
 export default userRouter;

@@ -4,7 +4,7 @@ import slugify from 'slugify';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    fullName:{
+    fullname:{
         type:String,
         required:true
     },
@@ -22,11 +22,11 @@ const userSchema = new Schema({
     },
     profilePic:{
         type:String,
-        required:true
+        required:false
     },
     photoUrl:{
         type:String,
-        required:true
+        required:false
     },
     age:{
         type:Number,
@@ -70,16 +70,14 @@ const userSchema = new Schema({
     }],
     slug:{
         type:String,
-        required:true
+        unique:true
     }
 })
 
-userSchema.pre('validate',(next)=>{
-    if(!this.slug){
-        this.slug = slugify(fullName)
-    }
+userSchema.pre("save", function (next) {
+    this.slug = slugify(this.fullname, { lower: true });
     next();
-})
+  });
 
 const User = mongoose.model('User',userSchema)
 
