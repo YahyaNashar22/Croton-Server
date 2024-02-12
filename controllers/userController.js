@@ -201,7 +201,7 @@ export const updateUser = async(req,res)=>{
         
         return res.status(201).json({message:"user updated successfully !", user:updatedUser});
     } catch(e) {
-        res.status(400).json({message:"could not update user", error:e})
+        res.status(400).json({message:"could not update user", error:e.message})
     }
 }
 
