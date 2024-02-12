@@ -34,16 +34,14 @@ const exerciseSchema = new Schema({
     },
     slug:{
         type:String,
-        required:true
+        unique:true
     }
 })
 
-exerciseSchema.pre('validate',(next)=>{
-    if(!this.slug){
-        this.slug = slugify(name)
-    }
+exerciseSchema.pre("save", function (next) {
+    this.slug = slugify(this.name, { lower: true });
     next();
-})
+  });
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);
 export default Exercise;

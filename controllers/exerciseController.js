@@ -2,7 +2,7 @@ import exerciseSchema from "../models/exerciseModel.js";
 import fs, { rmSync } from 'fs';
 
 function removeImage(image) {
-    fs.unlinkSync("images/male/" + image, (err) => {
+    fs.unlinkSync("images/" + image, (err) => {
       if (err) {
         console.log(`we can't delete the image`);
       } else {
@@ -15,7 +15,7 @@ function removeImage(image) {
 export const addExercise = async(req,res)=>{
     try{
         const {name, muscleGrp, category, type, intensity, instructions} = req.body;
-        const gif = req.file.filename;
+        const image = req.file.filename;
         const newExercise = new exerciseSchema({
             name: name,
             muscleGrp:muscleGrp,
@@ -23,7 +23,7 @@ export const addExercise = async(req,res)=>{
             type:type,
             intensity:intensity,
             instructions:instructions,
-            gif:gif
+            gif:image
         })
         await newExercise.save();
         res.status(200).json({message:"exercise added successfully !", exercise:newExercise});
@@ -44,7 +44,7 @@ export const updateExercise = async(req,res)=>{
             removeImage(exercise.gif)
         }
         const {name,muscleGrp,category,type,intensity,instructions} = req.body;
-        const gif = req.file? req.file.filename:exercise.gif;
+        const image = req.file? req.file.filename:exercise.gif;
         const updatedExercise = await exerciseSchema.findByIdAndUpdate({_id:id},
            {$set:{
             name: name,
@@ -53,7 +53,7 @@ export const updateExercise = async(req,res)=>{
             type:type,
             intensity:intensity,
             instructions:instructions,
-            gif:gif
+            gif:image
         }});
         
         return res.status(201).json({message:"exercise updated successfully !", exercise:updatedExercise});

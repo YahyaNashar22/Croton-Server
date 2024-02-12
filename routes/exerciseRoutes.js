@@ -1,6 +1,7 @@
 import express from "express";
 import { addExercise,updateExercise,deleteExercise,getAllExercises,getOneExercise } from "../controllers/exerciseController.js";
 import upload from "../middlewares/multer.js"
+import { authorized, checkRole } from "../middlewares/authorization.js";
 
 const exerciseRouter =  express.Router();
 
