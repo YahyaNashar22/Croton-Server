@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import dbConnection from './db/dbConnection.js';
 import userRouter from './routes/userRoutes.js';
 import exerciseRouter from './routes/exerciseRoutes.js';
+import trainingPlanRouter from './routes/trainingPlanRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -20,7 +21,8 @@ app.use(express.static("images"));
 
 //Routes for different models
 app.use('/users', userRouter);
-app.use('/exercises',exerciseRouter)
+app.use('/exercises',exerciseRouter);
+app.use('/trainingplans',trainingPlanRouter);
 
 //CORS Policies
 app.use(

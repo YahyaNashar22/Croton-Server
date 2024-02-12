@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import sluigify from "slugify";
+import slugify from "slugify";
 
 const { Schema } = mongoose;
 
@@ -13,14 +13,6 @@ const trainingPlanSchema = new Schema({
         required:true
     },
     nbOfExercises:{
-        type:Number,
-        required:true
-    },
-    rate:{
-        type:Number,
-        required:true
-    },
-    votes:{
         type:Number,
         required:true
     },
@@ -50,24 +42,19 @@ const trainingPlanSchema = new Schema({
     comments:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Comment",
-        required:true
-    },
-    favorite:{
-        type:Boolean,
         required:false
     },
     slug:{
         type:String,
-        required:true
+        unique:true
     }
 })
 
-trainingPlanSchema.pre('validate',(next)=>{
-    if(!this.slug){
-        this.slug = slugify(name);
-    }
+trainingPlanSchema.pre("save", function (next) {
+    this.slug = slugify(this.name, { lower: true });
     next();
-})
+  });
+
 
 const TrainingPlan = mongoose.model("TrainingPlan", trainingPlanSchema);
 
