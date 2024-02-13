@@ -1,5 +1,5 @@
 import exerciseSchema from "../models/exerciseModel.js";
-import fs, { rmSync } from 'fs';
+import fs from 'fs';
 
 function removeImage(image) {
     fs.unlinkSync("images/" + image, (err) => {
@@ -38,7 +38,7 @@ export const updateExercise = async(req,res)=>{
     try{
         const exercise = await exerciseSchema.findById(id);
         if(!exercise){
-            return res.status(404).json("exxercise is not found!");
+            return res.status(404).json("exercise is not found!");
         }
         if(req.file && exercise.gif){
             removeImage(exercise.gif)

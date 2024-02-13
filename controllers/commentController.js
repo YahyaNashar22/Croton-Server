@@ -1,14 +1,15 @@
 import commentSchema from "../models/commentModel.js"
 
 export const addComment = async(req,res)=>{
-    const id = req.id
+    // May need to be fixed when working on the front end
+    const {id} = req.body
     try{
         const {content,trainingPlanID,blogID}= req.body;
         const newComment = new commentSchema({
             userID:id,
-            content:content,
-            trainingPlanID:trainingPlanID,
-            blogID:blogID
+            content,
+            trainingPlanID,
+            blogID
         });
         await newComment.save();
         res.status(200).json({message:"comment added successfully !",comment:newComment})

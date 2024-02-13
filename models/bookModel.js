@@ -24,14 +24,6 @@ const bookSchema = new Schema({
         type:String,
         required:true
     },
-    rate:{
-        type:Number,
-        required:true
-    },
-    votes:{
-        type:Number,
-        required:true
-    },
     cover:{
         type:String,
         required:true
@@ -40,22 +32,20 @@ const bookSchema = new Schema({
         type:String,
         required:true
     },
-    favorite:{
-        type:Boolean,
+    link:{
+        type:String,
         required:false
     },
     slug:{
         type:String,
-        required:true
+        unique:true
     }
 })
 
-bookSchema.pre('validate',(next)=>{
-    if(!this.slug){
-        this.slug = slugify(title);
-    }
+bookSchema.pre("save", function (next) {
+    this.slug = slugify(this.title, { lower: true });
     next();
-})
+  });
 
 const Book = mongoose.model("Book",bookSchema);
 

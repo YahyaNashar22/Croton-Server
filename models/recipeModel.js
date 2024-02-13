@@ -21,40 +21,26 @@ const recipeSchema = new Schema({
         type:String,
         required:true
     },
-    rate:{
-        type:Number,
-        required:true
-    },
-    votes:{
-        type:Number,
-        required:true
-    },
-    ingredients:{
+    ingredients:[{
         ingredient:{
             type:String,
-            required:true
+            required:false
         },
         quantity:{
             type:Number,
             required:false
         },
-    },
-    favorite:{
-        type:Boolean,
-        required:false
-    },
+    }],
     slug:{
         type:String,
-        required:true
+        unique:true
     }
 })
 
-recipeSchema.pre('validate',(next)=>{
-    if(!this.slug){
-        this.slug = slugify(name);
-    }
+recipeSchema.pre("save", function (next) {
+    this.slug = slugify(this.name, { lower: true });
     next();
-})
+  });
 
 const Recipe = mongoose.model("Recipe",recipeSchema);
 
