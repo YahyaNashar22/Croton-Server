@@ -18,7 +18,7 @@ const userSchema = new Schema({
     },
     phoneNumber:{
         type:Number,
-        required:true
+        required:false
     },
     profilePic:{
         type:String,
@@ -30,7 +30,7 @@ const userSchema = new Schema({
     },
     age:{
         type:Number,
-        required:true
+        required:false
     },
     gender:{
         type:String,

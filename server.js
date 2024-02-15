@@ -15,6 +15,13 @@ import bookRouter from './routes/bookRoutes.js';
 dotenv.config();
 const app = express();
 
+//CORS Policies
+app.use(cors({
+  origin:"http://localhost:3000",
+  credentials: true,
+  optionsSuccessStatus: 200,}
+));
+
 //essential middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -30,15 +37,7 @@ app.use('/comments',commentRouter);
 app.use('/recipe',recipeRouter);
 app.use('/books',bookRouter);
 
-//CORS Policies
-app.use(
-    cors({
-      origin: "http://localhost:3000",
-      credentials: true,
-      optionsSuccessStatus: 200,
-    })
-  );
-
+  
   app.listen(process.env.PORT, (error) => {
     if (!error) {
       console.log(`Server running on port: ${process.env.PORT}`);

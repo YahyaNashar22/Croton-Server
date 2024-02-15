@@ -137,7 +137,7 @@ export const logout = (req, res) => {
 export const getOneUser = async (req, res) => {
     const token = req.cookies.userToken;
     const decoded = verifyToken(token);
-    const id = decoded.data?.id;
+    const id = decoded.data ? decoded.data.id : undefined;
     try {
       if (!id) {
         return res.status(401).json({ message: "Token not found !" });

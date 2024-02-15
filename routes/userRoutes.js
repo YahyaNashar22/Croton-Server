@@ -7,11 +7,11 @@ const userRouter = express.Router();
 
 userRouter.post('/signup',upload.single('image'), signup);
 userRouter.post('/gsign', googleSignup);
+userRouter.post('/login', login);
 
-userRouter.get('/login', login);
 userRouter.get('/logout', logout);
 userRouter.get('/allusers',getAllUsers);
-userRouter.get('/oneuser/:id',getOneUser);
+userRouter.get('/oneuser',getOneUser);
 
 userRouter.put('/updateuser/:id',upload.single('image'),updateUser);
 userRouter.put('/forgotpass/:id',forgotPass);
