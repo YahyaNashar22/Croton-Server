@@ -14,7 +14,7 @@ export const createToken = (user) => {
       weight:user.weight,
       role:user.role,
       profilePic:user.profilePic,
-      photoUrl:user.photoUrl
+      photoURL:user.photoURL
     },
     process.env.SECRET_TOKEN
   );

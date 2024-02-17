@@ -24,7 +24,7 @@ const userSchema = new Schema({
         type:String,
         required:false
     },
-    photoUrl:{
+    photoURL:{
         type:String,
         required:false
     },
@@ -34,7 +34,7 @@ const userSchema = new Schema({
     },
     gender:{
         type:String,
-        required:true
+        required:false
     },
     height:{
         type:Number,
@@ -75,7 +75,7 @@ const userSchema = new Schema({
 })
 
 userSchema.pre("save", function (next) {
-    this.slug = slugify(this.fullname, { lower: true });
+    this.slug = slugify(`${this.fullname} ${this._id}`, { lower: true });
     next();
   });
 

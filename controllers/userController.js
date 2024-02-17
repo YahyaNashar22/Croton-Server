@@ -53,10 +53,10 @@ export const googleSignup = async(req,res)=>{
                 }
                 //
 
-        const {fullname, email,phoneNumber,age,gender,height,weight,role} = req.body;
-        const photoUrl = req.file;
+        const {fullname, email,phoneNumber,photoURL,role} = req.body;
+        console.log(req.body)
         const randomPassword = generateRandomPass(10); 
-        const password = req.body.password || randomPassword;
+        const password = randomPassword;
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
 
@@ -79,7 +79,7 @@ export const googleSignup = async(req,res)=>{
 
             //if it's a new user 
             const newUser = new userSchema({
-                fullname, email,password:hash,phoneNumber,age,gender,height,weight,role,photoUrl
+                fullname, email,password:hash,phoneNumber,role,photoURL
             });
             await newUser.save();
             const token = createToken(newUser);
@@ -93,7 +93,7 @@ export const googleSignup = async(req,res)=>{
           //
 
     } catch(e) {
-        res.status(400).json({message:"error creating user", error:e})
+        res.status(400).json({message:"error creating user", error:e.message})
     }
 }
 
@@ -155,7 +155,7 @@ export const getOneUser = async (req, res) => {
           weight:user.weight,
           role:user.role,
           profilePic:user.profilePic,
-          photoUrl:user.photoUrl
+          photoURL:user.photoURL
         });
       } else {
         return res.status(404).json({ error: "User Not Found!" });
