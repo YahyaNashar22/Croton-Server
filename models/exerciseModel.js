@@ -28,10 +28,10 @@ const exerciseSchema = new Schema({
         type:String,
         required:true
     },
-    gif:{
+    gif:[{
         type:String,
         required:true
-    },
+    }],
     slug:{
         type:String,
         unique:true

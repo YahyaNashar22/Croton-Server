@@ -15,7 +15,7 @@ function removeImage(image) {
 export const addExercise = async(req,res)=>{
     try{
         const {name, muscleGrp, category, type, intensity, instructions} = req.body;
-        const image = req.file.filename;
+        const image = req.files.map((file)=>file.filename);
         const newExercise = new exerciseSchema({
             name: name,
             muscleGrp:muscleGrp,
@@ -41,10 +41,10 @@ export const updateExercise = async(req,res)=>{
             return res.status(404).json("exercise is not found!");
         }
         if(req.file && exercise.gif){
-            removeImage(exercise.gif)
+            exercise.gif.map(file=>removeImage(exercise.file))
         }
         const {name,muscleGrp,category,type,intensity,instructions} = req.body;
-        const image = req.file? req.file.filename:exercise.gif;
+        const image = req.files? req.files.map(file => file.filename): exercise.gif;
         const updatedExercise = await exerciseSchema.findByIdAndUpdate({_id:id},
            {$set:{
             name: name,
@@ -71,7 +71,7 @@ export const deleteExercise = async (req, res) => {
             return res.status(404).json({message:"exercise not found !"})
         }
         if(exercise.gif){
-            removeImage(exercise.gif);
+            exercise.gif.map(file=>removeImage(exercise.file))
         }
       await exerciseSchema.deleteOne({ _id: id });
       res.status(200).json({ message: "exercise deleted successfully" });
@@ -102,5 +102,23 @@ export const getOneExercise = async(req,res)=>{
         }
     } catch(e) {
         res.status(400).json({message:"problem getting exercise",error:e.message})
+    }
+}
+
+export const searchExercise = async(req,res)=>{
+    const { search } = req.body;
+    const searchRegex = new RegExp(search, "i");
+    console.log(searchRegex)
+    try{
+        const foundExercises = await exerciseSchema.find({
+            name:{$regex:searchRegex}
+        });
+        if(foundExercises.length>0){
+            res.status(200).json({message:"exercises found!", foundExercises:foundExercises})
+        }else{
+            res.status(404).json({message:"no exercises found !"})
+        }
+    } catch(e) {
+        res.json(400).json({message:"problem finding what you're searching for",error:e.message})
     }
 }
