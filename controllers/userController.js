@@ -142,7 +142,7 @@ export const getOneUser = async (req, res) => {
       if (!id) {
         return res.status(401).json({ message: "Token not found !" });
       }
-      const user = await userSchema.findById(id);
+      const user = await userSchema.findById(id).populate("favPlans").populate("favBooks").populate("favRecipes").populate("exerciseHistory");
       if (user) {
         return res.json(
          user
@@ -158,7 +158,7 @@ export const getOneUser = async (req, res) => {
   // Fetch all users
 export const getAllUsers = async (req, res) => {
     try {
-      const allUsers = await userSchema.find();
+      const allUsers = await userSchema.find().populate("favPlans").populate("favBooks").populate("favRecipes").populate("exerciseHistory");
       return res.status(200).json(allUsers);
     } catch (err) {
       res.status(400).json({ message:"Users could not be fetched", error:err });
@@ -169,7 +169,7 @@ export const getAllUsers = async (req, res) => {
 export const updateUser = async(req,res)=>{
     const id = req.params.id;
     try{
-        const user = await userSchema.findById(id);
+        const user = await userSchema.findById(id).populate("favPlans").populate("favBooks").populate("favRecipes").populate("exerciseHistory");
         if(!user){
             return res.status(404).json("User is not found!");
         }
