@@ -16,12 +16,12 @@ function removeImage(image) {
 //Sign up function
 export const signup = async(req,res)=>{
     try{
-        const {fullname, email,password,phoneNumber,age,gender,height,weight,role} = req.body;
-        const profilePic = req.file.filename;
+        const {fullname, email,password,role} = req.body;
+        const profilePic = req.file?req.file.filename:"profile.svg";
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
         const newUser = new userSchema({
-            fullname:fullname, email:email,password:hash,phoneNumber:phoneNumber,age:age,gender:gender,height:height,weight:weight,role:role,profilePic:profilePic
+            fullname:fullname, email:email,password:hash,role:role,profilePic:profilePic
         });
         await newUser.save();
         const token = createToken(newUser);
@@ -144,19 +144,9 @@ export const getOneUser = async (req, res) => {
       }
       const user = await userSchema.findById(id);
       if (user) {
-        return res.json({
-          fullname:user.fullname,
-          email:user.email,
-          password:user.hash,
-          phoneNumber:user.phoneNumber,
-          age:user.age,
-          gender:user.gender,
-          height:user.height,
-          weight:user.weight,
-          role:user.role,
-          profilePic:user.profilePic,
-          photoURL:user.photoURL
-        });
+        return res.json(
+         user
+        );
       } else {
         return res.status(404).json({ error: "User Not Found!" });
       }
@@ -251,3 +241,117 @@ export const deleteUser = async (req, res) => {
       res.status(400).json({ message: " could not delete user", error:err });
     }
   };
+
+  // Add favorite plan
+
+  export const addFavPlan = async(req,res) => {
+    const {planID, userID} = req.body;
+    
+    try{
+      const user = await userSchema.findById(userID)
+      if(!user){
+        res.status(404).json({message:"user not found"})
+      }else{
+        user.favPlans.push(planID);
+        res.status(200).json({messge:"plan added successfully", user:user})
+        await user.save()
+      }
+    } catch(e) {
+      res.status(400).json({message:"couldn't add plan to favorites", error:e.message})
+    }
+  }
+
+   // Add favorite books
+
+   export const addFavBook = async(req,res) => {
+    const {bookID, userID} = req.body;
+    
+    try{
+      const user = await userSchema.findById(userID)
+      if(!user){
+        res.status(404).json({message:"user not found"})
+      }else{
+        user.favBooks.push(bookID);
+        res.status(200).json({messge:"book added successfully", user:user})
+        await user.save()
+      }
+    } catch(e) {
+      res.status(400).json({message:"couldn't add book to favorites", error:e.message})
+    }
+  }
+
+   // Add favorite recipes
+
+   export const addFavRecipe = async(req,res) => {
+    const {recipeID, userID} = req.body;
+    
+    try{
+      const user = await userSchema.findById(userID)
+      if(!user){
+        res.status(404).json({message:"user not found"})
+      }else{
+        user.favRecipes.push(recipeID);
+        res.status(200).json({messge:"recipe added successfully", user:user})
+        await user.save()
+      }
+    } catch(e) {
+      res.status(400).json({message:"couldn't add recipe to favorites", error:e.message})
+    }
+  }
+
+// remove favorite recipes
+
+       export const removeFavPlan = async(req,res) => {
+        const {planID, userID} = req.body;
+        
+        try{
+          const user = await userSchema.findById(userID)
+          if(!user){
+            res.status(404).json({message:"user not found"})
+          }else{
+            user.favPlans = user.favPlans.filter(favPlan => favPlan.toString() !== planID);;
+            res.status(200).json({messge:"plan removed successfully", user:user})
+            await user.save()
+          }
+        } catch(e) {
+          res.status(400).json({message:"couldn't remove plan from favorites", error:e.message})
+        }
+      }
+
+ // remove favorite book
+
+   export const removeFavBook = async(req,res) => {
+        const {bookID, userID} = req.body;
+        
+      try{
+          const user = await userSchema.findById(userID)
+          if(!user){
+            res.status(404).json({message:"user not found"})
+          }else{
+            user.favBooks = user.favBooks.filter(favBook => favBook.toString() !== bookID);;
+            res.status(200).json({messge:"book removed successfully", user:user})
+            await user.save()
+          }
+        } catch(e) {
+          res.status(400).json({message:"couldn't remove book from favorites", error:e.message})
+        }
+      }
+
+     // remove favorite recipes
+
+     export const removeFavRecipe = async(req,res) => {
+      const {recipeID, userID} = req.body;
+      
+      try{
+        const user = await userSchema.findById(userID)
+        if(!user){
+          res.status(404).json({message:"user not found"})
+        }else{
+          user.favRecipes = user.favRecipes.filter(favRecipe => favRecipe.toString() !== recipeID);;
+          res.status(200).json({messge:"recipe removed successfully", user:user})
+          await user.save()
+        }
+      } catch(e) {
+        res.status(400).json({message:"couldn't remove recipe from favorites", error:e.message})
+      }
+    }

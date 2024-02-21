@@ -14,7 +14,12 @@ export const createToken = (user) => {
       weight:user.weight,
       role:user.role,
       profilePic:user.profilePic,
-      photoURL:user.photoURL
+      photoURL:user.photoURL,
+      favPlans:user.favPlans,
+      favBooks:user.favBooks,
+      favRecipes:user.favRecipes,
+      exerciseHistory:user.exerciseHistory,
+      slug:user.slug
     },
     process.env.SECRET_TOKEN
   );
