@@ -248,7 +248,7 @@ export const deleteUser = async (req, res) => {
     const {planID, userID} = req.body;
     
     try{
-      const user = await userSchema.findById(userID)
+      const user = await userSchema.findById(userID).populate('favPlans')
       if(!user){
         res.status(404).json({message:"user not found"})
       }else{
@@ -267,7 +267,7 @@ export const deleteUser = async (req, res) => {
     const {bookID, userID} = req.body;
     
     try{
-      const user = await userSchema.findById(userID)
+      const user = await userSchema.findById(userID).populate('favBooks')
       if(!user){
         res.status(404).json({message:"user not found"})
       }else{
@@ -286,7 +286,7 @@ export const deleteUser = async (req, res) => {
     const {recipeID, userID} = req.body;
     
     try{
-      const user = await userSchema.findById(userID)
+      const user = await userSchema.findById(userID).populate('favRecipes')
       if(!user){
         res.status(404).json({message:"user not found"})
       }else{

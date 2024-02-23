@@ -40,7 +40,7 @@ const bookSchema = new Schema({
         type:String,
         unique:true
     }
-})
+},{timestamps:true})
 
 bookSchema.pre("save", function (next) {
     this.slug = slugify(this.title, { lower: true });

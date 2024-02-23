@@ -107,3 +107,23 @@ export const filterBooksByGenre = async(req,res)=>{
         res.status(400).json({message:"problem fetching books", error:e.message})
     }
 }
+
+export const getLatestBooks = async(req,res)=>{
+    try{
+        const books = await bookSchema.find()
+        .sort({createdAt:-1})
+        .limit(10)
+        res.status(200).json({message:"latest 10 books found !", payload: books})
+    } catch(e) {
+     res.status(400).json({message:"problem fetching latest books",error:e.message})   
+    }
+}
+
+export const getAllGenres = async(req,res)=>{
+    try{
+       const genres = await bookSchema.distinct('genre')
+       res.status(200).json({message:"genres fetched successfully", payload:genres})
+    } catch(e) {
+        res.status(400).json({message:"problem fetching genres", error:e.message})
+    }
+}
