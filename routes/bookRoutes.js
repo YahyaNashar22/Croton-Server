@@ -1,7 +1,7 @@
 import express from "express";
 import {authorized, checkRole} from "../middlewares/authorization.js";
 import upload from "../middlewares/multer.js";
-import { addBook, updateBook, deleteBook,getAllBooks,getOneBook,searchBook,filterBooksByGenre, getLatestBooks, getAllGenres } from "../controllers/bookController.js";
+import { addBook, updateBook, deleteBook,getAllBooks,getOneBook,searchBook,filterBooksByGenre, getLatestBooks, getAllGenres, getTotalBookNumber } from "../controllers/bookController.js";
 
 const bookRouter = express.Router();
 
@@ -11,9 +11,11 @@ bookRouter.delete('/delete/:id', deleteBook);
 bookRouter.get('/getall',getAllBooks);
 bookRouter.get('/getone/:id',getOneBook);
 bookRouter.get('/search',searchBook);
-bookRouter.get('/genre',filterBooksByGenre);
+bookRouter.post('/genre',filterBooksByGenre);
 bookRouter.get('/getlatest',getLatestBooks);
 bookRouter.get('/getgenres',getAllGenres);
+bookRouter.get('/gettotalnumber',getTotalBookNumber);
+
 
 
 export default bookRouter;
