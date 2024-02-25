@@ -74,10 +74,11 @@ export const getAllBooks = async(req,res)=>{
     const skip = (page - 1) * limit;
     try{
         const books = await bookSchema.find().skip(skip).limit(limit).exec();
+        const count = await bookSchema.find().countDocuments();
         if(!books || books.lenght === 0){
             res.status(404).json({message:"no more books to show !"})
         }
-        res.status(200).json({message:"books found !", books:books})
+        res.status(200).json({message:"books found !", books:books, count:count})
     } catch(e) {
         res.status(400).json({message:"problem fetching books", error:e.message})
     }
