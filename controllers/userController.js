@@ -17,7 +17,8 @@ function removeImage(image) {
 export const signup = async(req,res)=>{
     try{
         const {fullname, email,password,role} = req.body;
-        const profilePic = req.file?req.file.filename:"profile.svg";
+        const profilePic =  req.file?req.file.filename:"profile.svg";
+        console.log(req.file)
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
         const newUser = new userSchema({
@@ -33,6 +34,7 @@ export const signup = async(req,res)=>{
           }).json({messaege:"user created successfully", userToken:decoded})
     } catch(e) {
         res.status(400).json({message:"user cannot be created !",error:e.message})
+        console.log(e)
     }
 }
 
@@ -54,7 +56,6 @@ export const googleSignup = async(req,res)=>{
                 //
 
         const {fullname, email,phoneNumber,photoURL,role} = req.body;
-        console.log(req.body)
         const randomPassword = generateRandomPass(10); 
         const password = randomPassword;
         const salt = bcrypt.genSaltSync(10);
@@ -96,6 +97,20 @@ export const googleSignup = async(req,res)=>{
         res.status(400).json({message:"error creating user", error:e.message})
     }
 }
+
+export const extraInfo = async(req,res)=>{
+  const {age,height, weight, gender, phoneNumber} = req.body;
+  const token = req.cookies.userToken;
+  const decoded = verifyToken(token);
+  const id = decoded.data ? decoded.data.id : undefined;
+  try {
+    const user = await userSchema.findByIdAndUpdate(id, {
+      age:age,height:height,weight:weight,gender:gender,phoneNumber:phoneNumber
+    },{new:true})
+    res.status(200).json({message:'extra info added', payload:user});
+}catch(e){
+res.status(400).json({message:"problem finding user", error:e})
+}}
 
 // Log in function
 export const login = async (req, res) => {

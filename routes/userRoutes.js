@@ -1,5 +1,5 @@
 import express from "express";
-import { signup,googleSignup,login,logout,getOneUser,getAllUsers,updateUser,forgotPass,changeRole,deleteUser, addFavPlan, addFavBook, addFavRecipe, removeFavBook, removeFavPlan, removeFavRecipe } from "../controllers/userController.js";
+import { signup,googleSignup,login,logout,getOneUser,getAllUsers,updateUser,forgotPass,changeRole,deleteUser, addFavPlan, addFavBook, addFavRecipe, removeFavBook, removeFavPlan, removeFavRecipe, extraInfo } from "../controllers/userController.js";
 import { authorized,checkRole } from "../middlewares/authorization.js";
 import upload from "../middlewares/multer.js"
 
@@ -19,9 +19,11 @@ userRouter.get('/logout', logout);
 userRouter.get('/allusers',getAllUsers);
 userRouter.get('/oneuser',getOneUser);
 
+userRouter.put('/extrainfo',extraInfo);
 userRouter.put('/updateuser/:id',upload.single('image'),updateUser);
 userRouter.put('/forgotpass/:id',forgotPass);
 userRouter.put('/changerole/:id',changeRole);
+
 
 userRouter.delete('/deleteuser/:id',deleteUser);
 
