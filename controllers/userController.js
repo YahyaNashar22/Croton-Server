@@ -125,7 +125,7 @@ export const login = async (req, res) => {
           const decoded = verifyToken(token);
           res
             .cookie("userToken", token, {
-              secure: false,
+              secure: true,
               httpOnly: true,
               sameSite: "None",
             })
