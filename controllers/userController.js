@@ -144,6 +144,7 @@ export const logout = (req, res) => {
     console.log("cookie cleared");
     return res
       .clearCookie("userToken")
+      .clearCookie("_vercel_jwt")
       .status(200)
       .send("successfully logged out");
   };
