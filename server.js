@@ -17,7 +17,7 @@ const app = express();
 
 //CORS Policies
 app.use(cors({
-  origin:["http://localhost:3000","croton-client.vercel.app"],
+  origin:["http://localhost:3000","https://croton-client-aqk25ayvi-yahyanashar22s-projects.vercel.app"],
   credentials: true,
   optionsSuccessStatus: 200,}
 ));
