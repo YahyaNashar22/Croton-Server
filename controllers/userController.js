@@ -142,9 +142,12 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     console.log("cookie cleared");
+    Object.keys(req.cookies).forEach(cookieName => {
+      // Clear each cookie by setting its value to null and setting an expired date
+      res.clearCookie(cookieName);
+  });
     return res
       .clearCookie("userToken")
-      .clearCookie("_vercel_jwt")
       .status(200)
       .send("successfully logged out");
   };
